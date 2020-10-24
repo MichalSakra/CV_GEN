@@ -4,6 +4,7 @@ import classes from "./Button.module.sass";
 const Button = (props) => {
   return (
     <button
+      disabled={props.isDisabled}
       onClick={props.click}
       className={[classes.Button, classes[props.btnType]].join(" ")}
     >

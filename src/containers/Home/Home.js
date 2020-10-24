@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 
 class Home extends React.Component {
   handleStartButtonClick(e) {
-    this.props.history.push("/form");
+    this.props.history.push("/form/1");
   }
 
   render() {
