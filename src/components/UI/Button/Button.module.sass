@@ -1,18 +1,27 @@
 >
-    
+@import "../../../sass-variables/colors.module.sass"   
+
 .Button
-    padding: 10px 20px
-    font-weight: 700
+    box-sizing: border-box
+    font-weight: 400
     border-radius: 5px
     outline-style: none
     transition: all .2s linear 
     &:hover
         cursor: pointer
         box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3)
-.success
-    outline: #63C7B2
-    color: #63C7B2
 
+.success
+    outline: $primary-color
+    color: $primary-color
 .danger
-    outline: #8E6C88
-    color: #8E6C88
+    outline: $secondary-color
+    color: $secondary-color
+
+.small
+    padding: 5px 10px
+    margin: 5px
+
+.big
+    padding: 10px 20px
+    margin: 10px

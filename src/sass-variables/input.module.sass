@@ -1,0 +1,18 @@
+@import "./colors.module.sass"
+
+@mixin inputGeneralStyle 
+    margin: auto
+    box-sizing: border-box
+    width: 100%
+    display: inline-block   
+    outline-color: transparent
+    border: 1px solid $input-color
+    padding: 20px 10px
+    border-radius: 5px
+    font-size: 1.3rem
+    transition: box-shadow .3s linear, outline-color .4s linear 
+
+    &:focus
+        background-color: $focus-input-color
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)
+        outline-color: $outline-color 
