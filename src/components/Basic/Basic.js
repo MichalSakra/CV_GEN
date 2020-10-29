@@ -13,7 +13,7 @@ const Basic = (props) => {
     const hasCheckbox = props.data[item].hasOwnProperty("isActive");
 
     return (
-      <div key={item + i} className={classes.Wrapper}>
+      <div key={item + i} className={classes.InputWrapper}>
         <Input
           label={label}
           type={type}
@@ -35,7 +35,7 @@ const Basic = (props) => {
     );
   });
 
-  return <div className={classes.Basic}>{inputs}</div>;
+  return inputs;
 };
 
 export default Basic;

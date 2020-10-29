@@ -1,11 +1,10 @@
 @import "../../sass-variables/colors.module.sass"
+@import "../../sass-variables/wrapper.module.sass"
 .Compound
-    box-sizing: border-box
-    padding: 20px
+    @include wrapperGeneralStyle
   
     .Section
-        padding: 20px 
-        border: 1px solid $primary-color
+        @include sectionGeneralStyle   
 
     .DateWrapper
         display: flex

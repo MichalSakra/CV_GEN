@@ -2,8 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 
 import Basic from "../../components/Basic/Basic";
-
 import Compound from "../../components/Compound/Compound";
+import Language from "../../components/Language/Language";
 
 import Button from "../../components/UI/Button/Button";
 import classes from "./Form.module.sass";
@@ -128,7 +128,6 @@ class Form extends React.Component {
           },
         },
       ],
-
       school: [
         {
           place: {
@@ -157,10 +156,49 @@ class Form extends React.Component {
           },
         },
       ],
+      languages: [
+        {
+          language: {
+            id: "language",
+            value: "",
+            type: "text",
+            label: "language name",
+          },
+          level: {
+            id: "level",
+            value: "",
+            type: "text",
+            label: "Your level",
+          },
+          skills: {
+            id: "skills",
+            value: [],
+            type: "text",
+            label: "skills",
+          },
+        },
+      ],
     },
     activePage: null,
+    options: [
+      "Elementary",
+      "Limited Working",
+      "Working Professional",
+      "Full Professional",
+      "Native",
+    ],
   };
 
+  componentDidMount() {
+    this.setState({
+      activePage: +this.props.match.params.id,
+    });
+  }
+  componentDidUpdate(__, prevState) {
+    if (prevState.activePage !== this.state.activePage) {
+      this.props.history.push(`${this.state.activePage}`);
+    }
+  }
   handleSwitchComponent(e, move) {
     e.preventDefault();
 
@@ -172,16 +210,6 @@ class Form extends React.Component {
       this.setState((prev) => ({
         activePage: --prev.activePage,
       }));
-    }
-  }
-  componentDidMount() {
-    this.setState({
-      activePage: +this.props.match.params.id,
-    });
-  }
-  componentDidUpdate(__, prevState) {
-    if (prevState.activePage !== this.state.activePage) {
-      this.props.history.push(`${this.state.activePage}`);
     }
   }
   handleBasicInputChange = (e, dataType, id) => {
@@ -201,7 +229,6 @@ class Form extends React.Component {
       };
     });
   };
-
   handleCompoundInputChange = (e, dataType, id, index) => {
     const dataArray = [...this.state.userData[dataType]];
 
@@ -221,11 +248,11 @@ class Form extends React.Component {
       userData,
     }));
   };
-
-  handleDateInputChange = (e, dataType, position, index) => {
+  handleDateInputChange = (e, dataType, id, index) => {
+    console.log("działa");
     const newData = [...this.state.userData[dataType]];
     const date = { ...this.state.userData[dataType][index].date };
-    date.value[position] = e.target.value;
+    date.value[id] = e.target.value;
 
     newData[index] = {
       ...this.state.userData[dataType][index],
@@ -239,7 +266,6 @@ class Form extends React.Component {
       },
     });
   };
-
   handleCompoundTextareaChange = (e, dataType, mainIndex, index) => {
     const newData = [...this.state.userData[dataType]];
     const skills = { ...this.state.userData[dataType][mainIndex].skills };
@@ -257,7 +283,6 @@ class Form extends React.Component {
       },
     });
   };
-
   handleCheckboxChange = (dataType, id) => {
     let userData;
 
@@ -278,7 +303,6 @@ class Form extends React.Component {
       };
     });
   };
-
   handleAddSkill = (e, dataType, index) => {
     e.preventDefault();
     const skillsValue = [
@@ -297,42 +321,98 @@ class Form extends React.Component {
       };
     });
   };
-
   handleAddGroup = (e, dataType) => {
     e.preventDefault();
-    const newGroup = {
-      place: {
-        id: "place",
-        value: "",
-        type: "text",
-        label: "name",
-      },
-      specialization: {
-        id: "specialization",
-        value: "",
-        type: "text",
-        label: "Your specialization",
-      },
-      skills: {
-        id: "skills",
-        value: [""],
-        type: "text",
-        label: "skills",
-      },
-      date: {
-        id: "date",
-        value: ["", ""],
-        type: "month",
-        label: "date",
-      },
-    };
+    let newGroup;
+    switch (dataType) {
+      case "work":
+        newGroup = {
+          place: {
+            id: "place",
+            value: "",
+            type: "text",
+            label: "name",
+          },
+          specialization: {
+            id: "specialization",
+            value: "",
+            type: "text",
+            label: "Your specialization",
+          },
+          skills: {
+            id: "skills",
+            value: [""],
+            type: "text",
+            label: "skills",
+          },
+          date: {
+            id: "date",
+            value: ["", ""],
+            type: "month",
+            label: "date",
+          },
+        };
+        break;
+      case "school":
+        newGroup = {
+          place: {
+            id: "place",
+            value: "",
+            type: "text",
+            label: "name",
+          },
+          specialization: {
+            id: "specialization",
+            value: "",
+            type: "text",
+            label: "Your specialization",
+          },
+          skills: {
+            id: "skills",
+            value: [""],
+            type: "text",
+            label: "skills",
+          },
+          date: {
+            id: "date",
+            value: ["", ""],
+            type: "month",
+            label: "date",
+          },
+        };
+        break;
+      case "languages":
+        newGroup = {
+          language: {
+            id: "language",
+            value: "",
+            type: "text",
+            label: "language name",
+          },
+          level: {
+            id: "level",
+            value: "",
+            type: "text",
+            label: "Your level",
+          },
+          skills: {
+            id: "skills",
+            value: [],
+            type: "text",
+            label: "skills",
+          },
+        };
+        break;
+      default:
+        return null;
+    }
 
     const userData = {
       ...this.state.userData,
       [dataType]: [...this.state.userData[dataType], newGroup],
     };
 
-    this.setState((prev) => {
+    this.setState(() => {
       return {
         userData,
       };
@@ -351,6 +431,11 @@ class Form extends React.Component {
 
     this.setState({ userData });
   };
+
+  handleSelect = (e) => {
+    console.log(e.target.value);
+  };
+
   render() {
     const index = this.state.activePage;
     let activeComponent;
@@ -405,36 +490,49 @@ class Form extends React.Component {
           />
         );
         break;
+
+      case 5:
+        activeComponent = (
+          <Language
+            inputChange={this.handleCompoundInputChange}
+            header="Languages"
+            dataType="languages"
+            data={this.state.userData.languages}
+            options={this.state.options}
+            handleAddGroup={this.handleAddGroup}
+            handleDeleteSection={this.handleDeleteSection}
+            handleSelect={this.handleSelect}
+          />
+        );
+        break;
       default:
         activeComponent = null;
         break;
     }
 
     return (
-      <>
-        <form className={classes.FormContainer}>
-          <div className={classes.InputWrapper}>{activeComponent}</div>
+      <div className={classes.Container}>
+        <div className={classes.FormWrapper}>{activeComponent}</div>
 
-          <div className={classes.ControlButtons}>
-            <Button
-              btnType="danger"
-              btnSize="big"
-              click={(e) => this.handleSwitchComponent(e, "back")}
-              isDisabled={this.state.activePage <= 1}
-            >
-              poprzedni
-            </Button>
-            <Button
-              isDisabled={this.state.activePage >= 5}
-              btnType="success"
-              btnSize="big"
-              click={(e) => this.handleSwitchComponent(e, "forward")}
-            >
-              następny
-            </Button>
-          </div>
-        </form>
-      </>
+        <div className={classes.ControlButtons}>
+          <Button
+            btnType="danger"
+            btnSize="big"
+            click={(e) => this.handleSwitchComponent(e, "back")}
+            isDisabled={this.state.activePage <= 1}
+          >
+            poprzedni
+          </Button>
+          <Button
+            isDisabled={this.state.activePage >= 5}
+            btnType="success"
+            btnSize="big"
+            click={(e) => this.handleSwitchComponent(e, "forward")}
+          >
+            następny
+          </Button>
+        </div>
+      </div>
     );
   }
 }

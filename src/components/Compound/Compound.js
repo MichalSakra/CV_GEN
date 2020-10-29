@@ -22,7 +22,7 @@ class Compound extends React.Component {
   }
 
   showDateInputs = (item, dataType, i) => {
-    console.log(dataType);
+  
     return (
       <div className={classes.DateWrapper}>
         <DateInput
@@ -144,6 +144,8 @@ class Compound extends React.Component {
           />
         ) : null}
         <h1>{this.props.header}</h1>
+
+
         {this.showElements(this.props)}
         <Button
           btnType="success"
