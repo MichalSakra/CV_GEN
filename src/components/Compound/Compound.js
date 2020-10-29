@@ -4,6 +4,7 @@ import Button from "../UI/Button/Button";
 import TextArea from "../UI/TextArea/TextArea";
 import classes from "./Compound.module.sass";
 import Modal from "../UI/Modal/Modal";
+import DateInput from "../UI/DateInput/DateInput";
 
 class Compound extends React.Component {
   state = {
@@ -20,26 +21,28 @@ class Compound extends React.Component {
     }
   }
 
-  showDateInputs = (item, i) => {
-    console.log(item);
+  showDateInputs = (item, dataType, i) => {
+    console.log(dataType);
     return (
-      <>
-        <CompoundInput
+      <div className={classes.DateWrapper}>
+        <DateInput
           label={"from:"}
           type={item.date.type}
-          id={item.place.id}
+          id={item}
           value={item.date.value[0]}
           index={i}
+          change={(e) => this.props.handleDateInputChange(e, dataType, 0, i)}
         />
 
-        <CompoundInput
+        <DateInput
           label={"to:"}
           type={item.date.type}
-          id={item.place.id}
+          id={item}
           value={item.date.value[1]}
           index={i}
+          change={(e) => this.props.handleDateInputChange(e, dataType, 1, i)}
         />
-      </>
+      </div>
     );
   };
 
@@ -86,7 +89,7 @@ class Compound extends React.Component {
             value={item.specialization.value}
             index={i}
           />
-          {this.showDateInputs(item, i)}
+          {this.showDateInputs(item, dataType, i)}
           <p> Skills:</p>
           <div>
             {this.showSkillsInputs(item, i, dataType, textareaChange)}

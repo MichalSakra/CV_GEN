@@ -222,6 +222,24 @@ class Form extends React.Component {
     }));
   };
 
+  handleDateInputChange = (e, dataType, position, index) => {
+    const newData = [...this.state.userData[dataType]];
+    const date = { ...this.state.userData[dataType][index].date };
+    date.value[position] = e.target.value;
+
+    newData[index] = {
+      ...this.state.userData[dataType][index],
+      date: date,
+    };
+
+    this.setState({
+      userData: {
+        ...this.state.userData,
+        [dataType]: newData,
+      },
+    });
+  };
+
   handleCompoundTextareaChange = (e, dataType, mainIndex, index) => {
     const newData = [...this.state.userData[dataType]];
     const skills = { ...this.state.userData[dataType][mainIndex].skills };
@@ -368,6 +386,7 @@ class Form extends React.Component {
             handleAddSkill={this.handleAddSkill}
             handleAddGroup={this.handleAddGroup}
             handleDeleteSection={this.handleDeleteSection}
+            handleDateInputChange={this.handleDateInputChange}
           />
         );
         break;
@@ -382,6 +401,7 @@ class Form extends React.Component {
             handleAddSkill={this.handleAddSkill}
             handleAddGroup={this.handleAddGroup}
             handleDeleteSection={this.handleDeleteSection}
+            handleDateInputChange={this.handleDateInputChange}
           />
         );
         break;
@@ -393,7 +413,7 @@ class Form extends React.Component {
     return (
       <>
         <form className={classes.FormContainer}>
-          <div className={classes.Wrapper}>{activeComponent}</div>
+          <div className={classes.InputWrapper}>{activeComponent}</div>
 
           <div className={classes.ControlButtons}>
             <Button
