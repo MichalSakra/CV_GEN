@@ -11,9 +11,9 @@ const Basic = (props) => {
   const inputs = arrayOfInputs.map((item, i) => {
     const { label, type, id, isActive, value } = props.data[item];
     const hasCheckbox = props.data[item].hasOwnProperty("isActive");
-
+    const inactive = hasCheckbox && !isActive? classes.inactive : null
     return (
-      <div key={item + i} className={classes.InputWrapper}>
+      <div key={item + i} className={[classes.InputWrapper, inactive].join(" ")}>
         <Input
           label={label}
           type={type}

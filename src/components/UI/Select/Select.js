@@ -12,8 +12,8 @@ const showOptions = (options) => {
 };
 
 const Select = (props) => {
-  return <select onChange={props.select} className={classes.Select}>
-   <option value="" disabled selected> Choose the level </option>
+  return <select onChange={props.select} className={classes.Select} defaultValue={""}>
+    
     {showOptions(props.options)}</select>;
 };
 

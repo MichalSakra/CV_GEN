@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom";
 import Basic from "../../components/Basic/Basic";
 import Compound from "../../components/Compound/Compound";
 import Language from "../../components/Language/Language";
+import OtherInfo from "../../components/OtherInfo/OtherInfo";
+import Photo from "../../components/Photo/Photo";
 
 import Button from "../../components/UI/Button/Button";
 import classes from "./Form.module.sass";
@@ -166,7 +168,7 @@ class Form extends React.Component {
           },
           level: {
             id: "level",
-            value: "",
+            value: "Elementary",
             type: "text",
             label: "Your level",
           },
@@ -178,6 +180,34 @@ class Form extends React.Component {
           },
         },
       ],
+      otherInfo: [
+        {
+          id: "courses",
+          skills: {
+            value: [""],
+          },
+          label: "Courses",
+          type: "text",
+        },
+
+        {
+          id: "hobby",
+          skills: {
+            value: [""],
+          },
+          label: "Interests",
+          type: "text",
+        },
+      ],
+      photo: {
+        id: "photo",
+        value: "",
+        label: "image",
+        type: "text",
+        startValidate: false,
+        isValidated: false,
+        placeholder: "paste URL link to your photo",
+      },
     },
     activePage: null,
     options: [
@@ -230,9 +260,9 @@ class Form extends React.Component {
     });
   };
   handleCompoundInputChange = (e, dataType, id, index) => {
-    const dataArray = [...this.state.userData[dataType]];
+    const newData = [...this.state.userData[dataType]];
 
-    dataArray[index] = {
+    newData[index] = {
       ...this.state.userData[dataType][index],
       [id]: {
         ...this.state.userData[dataType][index][id],
@@ -241,7 +271,7 @@ class Form extends React.Component {
     };
     const userData = {
       ...this.state.userData,
-      [dataType]: dataArray,
+      [dataType]: newData,
     };
 
     this.setState((prev) => ({
@@ -249,7 +279,6 @@ class Form extends React.Component {
     }));
   };
   handleDateInputChange = (e, dataType, id, index) => {
-    console.log("działa");
     const newData = [...this.state.userData[dataType]];
     const date = { ...this.state.userData[dataType][index].date };
     date.value[id] = e.target.value;
@@ -266,7 +295,7 @@ class Form extends React.Component {
       },
     });
   };
-  handleCompoundTextareaChange = (e, dataType, mainIndex, index) => {
+  handleTextareaChange = (e, dataType, mainIndex, index) => {
     const newData = [...this.state.userData[dataType]];
     const skills = { ...this.state.userData[dataType][mainIndex].skills };
     skills.value[index] = e.target.value;
@@ -305,15 +334,11 @@ class Form extends React.Component {
   };
   handleAddSkill = (e, dataType, index) => {
     e.preventDefault();
-    const skillsValue = [
-      ...this.state.userData[dataType][index].skills.value,
-      "",
-    ];
 
     const userData = { ...this.state.userData };
     userData[dataType][index].skills = {
       ...this.state.userData[dataType][index].skills,
-      value: skillsValue,
+      value: [...this.state.userData[dataType][index].skills.value, ""],
     };
     this.setState((prev) => {
       return {
@@ -321,7 +346,30 @@ class Form extends React.Component {
       };
     });
   };
-  handleAddGroup = (e, dataType) => {
+  handleDeleteSkill = (e, dataType, mainIndex, i) => {
+    e.preventDefault();
+
+    const newArray = [...this.state.userData[dataType]];
+    newArray[mainIndex] = {
+      ...this.state.userData[dataType][mainIndex],
+      skills: {
+        ...this.state.userData[dataType][mainIndex].skills,
+        value: this.state.userData[dataType][mainIndex].skills.value.filter(
+          (___, index) => {
+            return index !== i;
+          }
+        ),
+      },
+    };
+
+    const userData = {
+      ...this.state.userData,
+      [dataType]: newArray,
+    };
+
+    this.setState({ userData });
+  };
+  handleAddSection = (e, dataType) => {
     e.preventDefault();
     let newGroup;
     switch (dataType) {
@@ -391,7 +439,7 @@ class Form extends React.Component {
           },
           level: {
             id: "level",
-            value: "",
+            value: "Elementary",
             type: "text",
             label: "Your level",
           },
@@ -424,7 +472,6 @@ class Form extends React.Component {
     const userData = {
       ...this.state.userData,
       [dataType]: this.state.userData[dataType].filter((item, i) => {
-        console.log(index, i);
         return index !== i;
       }),
     };
@@ -432,8 +479,68 @@ class Form extends React.Component {
     this.setState({ userData });
   };
 
-  handleSelect = (e) => {
-    console.log(e.target.value);
+  handleSelect = (e, dataType, index) => {
+    const newArray = [...this.state.userData[dataType]];
+    newArray[index].level = {
+      ...this.state.userData[dataType][index].level,
+      value: e.target.value,
+    };
+
+    this.setState({
+      userData: { ...this.state.userData, [dataType]: newArray },
+    });
+  };
+
+  handlePhotoInputChange = (e = "", dataType) => {
+    console.log(dataType);
+
+    this.setState({
+      userData: {
+        ...this.state.userData,
+        [dataType]: {
+          ...this.state.userData[dataType],
+          value: e.target.value,
+          startValidate: false,
+          isValidated: false,
+        },
+      },
+    });
+  };
+  handleResetPhotoValue = (e, dataType) => {
+    console.log("clicked");
+    e.preventDefault(e);
+    this.setState({
+      userData: {
+        ...this.state.userData,
+        [dataType]: {
+          ...this.state.userData[dataType],
+          value: "",
+          startValidate: false,
+          isValidated: false,
+        },
+      },
+    });
+  };
+  handleValidationPhoto = (e, dataType, action) => {
+    e.preventDefault();
+
+    let actionType;
+
+    if (action === "start") {
+      actionType = "startValidate";
+    } else if (action === "confirm") {
+      actionType = "isValidated";
+    }
+
+    this.setState({
+      userData: {
+        ...this.state.userData,
+        [dataType]: {
+          ...this.state.userData[dataType],
+          [actionType]: true,
+        },
+      },
+    });
   };
 
   render() {
@@ -467,11 +574,12 @@ class Form extends React.Component {
             data={this.state.userData.work}
             dataType="work"
             inputChange={this.handleCompoundInputChange}
-            textareaChange={this.handleCompoundTextareaChange}
+            textareaChange={this.handleTextareaChange}
             handleAddSkill={this.handleAddSkill}
-            handleAddGroup={this.handleAddGroup}
+            handleAddSection={this.handleAddSection}
             handleDeleteSection={this.handleDeleteSection}
             handleDateInputChange={this.handleDateInputChange}
+            handleDeleteSkill={this.handleDeleteSkill}
           />
         );
         break;
@@ -482,11 +590,12 @@ class Form extends React.Component {
             data={this.state.userData.school}
             dataType="school"
             inputChange={this.handleCompoundInputChange}
-            textareaChange={this.handleCompoundTextareaChange}
-            handleAddSkill={this.handleAddSkill}
-            handleAddGroup={this.handleAddGroup}
+            textareaChange={this.handleTextareaChange}
+            handleAddSection={this.handleAddSection}
             handleDeleteSection={this.handleDeleteSection}
             handleDateInputChange={this.handleDateInputChange}
+            handleDeleteSkill={this.handleDeleteSkill}
+            handleAddSkill={this.handleAddSkill}
           />
         );
         break;
@@ -499,9 +608,36 @@ class Form extends React.Component {
             dataType="languages"
             data={this.state.userData.languages}
             options={this.state.options}
-            handleAddGroup={this.handleAddGroup}
+            handleAddSection={this.handleAddSection}
             handleDeleteSection={this.handleDeleteSection}
             handleSelect={this.handleSelect}
+            textareaChange={this.handleTextareaChange}
+            handleAddSkill={this.handleAddSkill}
+            handleDeleteSkill={this.handleDeleteSkill}
+          />
+        );
+        break;
+
+      case 6:
+        activeComponent = (
+          <OtherInfo
+            dataType="otherInfo"
+            data={this.state.userData.otherInfo}
+            textareaChange={this.handleTextareaChange}
+            handleDeleteSkill={this.handleDeleteSkill}
+            handleAddSkill={this.handleAddSkill}
+          />
+        );
+        break;
+
+      case 7:
+        activeComponent = (
+          <Photo
+            dataType="photo"
+            data={this.state.userData.photo}
+            validatePhoto={this.handleValidationPhoto}
+            changePhoto={this.handlePhotoInputChange}
+            resetValue={this.handleResetPhotoValue}
           />
         );
         break;
@@ -524,7 +660,7 @@ class Form extends React.Component {
             poprzedni
           </Button>
           <Button
-            isDisabled={this.state.activePage >= 5}
+            isDisabled={this.state.activePage >= 7}
             btnType="success"
             btnSize="big"
             click={(e) => this.handleSwitchComponent(e, "forward")}

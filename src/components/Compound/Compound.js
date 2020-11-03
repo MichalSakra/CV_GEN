@@ -22,7 +22,6 @@ class Compound extends React.Component {
   }
 
   showDateInputs = (item, dataType, i) => {
-  
     return (
       <div className={classes.DateWrapper}>
         <DateInput
@@ -47,19 +46,19 @@ class Compound extends React.Component {
   };
 
   showSkillsInputs = (element, mainIndex, dataType, change) => {
+  
     const { label, id, value } = element.skills;
 
-    return value.map((item, i) => {
+    return value.map((___, i) => {
       return (
         <TextArea
           key={label + dataType + mainIndex + i}
-          label={label}
           id={id + i}
-          mainIndex={mainIndex}
-          index={i}
           value={value[i]}
-          change={change}
-          dataType={dataType}
+          change={(e) => change(e, dataType, mainIndex, i)}
+          click={(e) => {
+            this.props.handleDeleteSkill(e, dataType, mainIndex, i);
+          }}
         />
       );
     });
@@ -99,7 +98,12 @@ class Compound extends React.Component {
           </div>
 
           {data.length > 1 ? (
-            <Button click={(e) => this.handleShowModal(e, i)}>
+            <Button
+              btnType="danger"
+              btnSize="small"
+              btnPosition="center"
+              click={(e) => this.handleShowModal(e, i)}
+            >
               Remove this section
             </Button>
           ) : null}
@@ -109,7 +113,6 @@ class Compound extends React.Component {
 
     return elements;
   };
-
   handleShowModal = (e, index) => {
     e.preventDefault();
     this.setState({
@@ -117,7 +120,6 @@ class Compound extends React.Component {
       sectionToDelete: index,
     });
   };
-
   handleCloseModal = (e) => {
     e.preventDefault();
 
@@ -145,13 +147,12 @@ class Compound extends React.Component {
         ) : null}
         <h1>{this.props.header}</h1>
 
-
         {this.showElements(this.props)}
         <Button
           btnType="success"
           btnSize="big"
           click={(e) => {
-            this.props.handleAddGroup(e, this.props.dataType);
+            this.props.handleAddSection(e, this.props.dataType);
           }}
         >
           {`add another ${this.props.dataType}`}

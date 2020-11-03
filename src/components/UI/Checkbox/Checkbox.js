@@ -4,7 +4,7 @@ const Checkbox = (props) => {
   const { isActive, dataType, id } = props;
   return (
     <span className={classes.Checkbox}>
-      <label htmlFor={`checkbox-${id}`}>{isActive ? "Ukryj" : "Pokaż"}</label>
+      <label htmlFor={`checkbox-${id}`}>{isActive ? "Hide" : "Show"}</label>
       <input
         onChange={(e) => {
           props.checkboxChange(dataType, id);

@@ -6,8 +6,14 @@
     justify-content: flex-start
     align-items: center
     position: relative
-
+    transition: background-color .3s linear, transform .5s .1s ease-out
     &:nth-of-type(even)
         background-color: #CCDBCA
 
- 
+.inactive
+    background-color: grey !important
+    
+    input[type=text], input[type=date]
+        background-color: grey
+        color: transparent
+        text-shadow: 0 0 3px rgba(0,0,0,0.5)

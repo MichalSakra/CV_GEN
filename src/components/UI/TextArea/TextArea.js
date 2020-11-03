@@ -1,19 +1,24 @@
 import React from "react";
 import classes from "./TextArea.module.sass";
-
+import Button from "../Button/Button";
 const TextArea = (props) => {
-  const { mainIndex, index, dataType } = props;
+
   return (
-    <textarea
-      onChange={(e) => props.change(e, dataType, mainIndex, index)}
-      id={props.id}
-      cols="20"
-      rows="5"
-      value={props.value}
-      className={classes.TextArea}
-    >
-      {props.value}
-    </textarea>
+    <div className={classes.InputWrapper}>
+      <Button click={props.click} btnType="remove">
+        remove
+      </Button>
+      <textarea
+        onChange={props.change}
+        id={props.id}
+        cols="20"
+        rows="2"
+        value={props.value}
+        className={classes.TextArea}
+      >
+        {props.value}
+      </textarea>
+    </div>
   );
 };
 

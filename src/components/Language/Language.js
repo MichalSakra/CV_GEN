@@ -3,6 +3,7 @@ import Select from "../UI/Select/Select";
 import Button from "../UI/Button/Button";
 import CompoundInput from "../UI/CompoundInput/CompoundInput";
 import Modal from "../UI/Modal/Modal";
+import TextArea from "../UI/TextArea/TextArea";
 import classes from "./Language.module.sass";
 
 class Language extends React.Component {
@@ -34,9 +35,30 @@ class Language extends React.Component {
     }));
   };
 
+  showSkillsInputs = (element, mainIndex, dataType, change) => {
+    const { label, id, value } = element.skills;
+
+    return value.map((item, i) => {
+      return (
+        <TextArea
+          key={label + dataType + mainIndex + i}
+          label={label}
+          id={id + i}
+          mainIndex={mainIndex}
+          index={i}
+          value={value[i]}
+          change={change}
+          dataType={dataType}
+          click={(e) => {
+            this.props.handleDeleteSkill(e, dataType, mainIndex, i);
+          }}
+        />
+      );
+    });
+  };
+
   showLanguages = (data, dataType, options, change) => {
     return data.map((language, i) => {
-      console.log(language);
       return (
         <section key={dataType + i} className={classes.Section}>
           <CompoundInput
@@ -46,10 +68,32 @@ class Language extends React.Component {
             value={language.language.value}
             change={change}
           />
-          <Select select={this.props.handleSelect} options={options} />
+          <Select
+            select={(e) => {
+              this.props.handleSelect(e, dataType, i);
+            }}
+            options={options}
+          />
+
+          <div>
+            {this.showSkillsInputs(
+              language,
+              i,
+              dataType,
+              this.props.textareaChange
+            )}
+            <Button click={(e) => this.props.handleAddSkill(e, dataType, i)}>
+              Add new skill
+            </Button>
+          </div>
 
           {data.length > 1 ? (
-            <Button click={(e) => this.handleShowModal(e, i)}>
+            <Button
+              btnType="danger"
+              btnPosition="center"
+              btnSize="big"
+              click={(e) => this.handleShowModal(e, i)}
+            >
               Remove this section
             </Button>
           ) : null}

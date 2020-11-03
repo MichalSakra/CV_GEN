@@ -10,6 +10,7 @@ const Input = (props) => {
         {label}
       </label>
       <input
+        placeholder={props.placeholder}
         index={index}
         value={value}
         id={id}
