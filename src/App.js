@@ -8,6 +8,7 @@ import {
 import Home from "./containers/Home/Home";
 import Form from "./containers/Form/Form";
 import "./index.module.sass";
+import Verify from "./components/Verify/Verify";
 
 class App extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class App extends React.Component {
             <Redirect to="/form/1" />
           </Route>
           <Route path="/form/:id" component={Form} />
+          <Route path="/verify" component={Verify} />
         </Switch>
       </Router>
     );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import classes from "./Photo.module.sass";
-
+import Confirm from "../Confirm/Confirm";
 const Photo = (props) => {
   const [isError, setError] = useState({ error: false });
 
@@ -65,7 +65,7 @@ const Photo = (props) => {
       {startValidate && !isError.error ? image : null}
       {isError.error ? <div>error ziomek</div> : null}
 
-      {isValidated ? "to już wszystko" : null}
+      {isValidated ? <Confirm submitForm={props.submitForm} /> : null}
     </section>
   );
 };

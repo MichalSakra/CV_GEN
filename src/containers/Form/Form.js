@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import Basic from "../../components/Basic/Basic";
@@ -6,7 +7,7 @@ import Compound from "../../components/Compound/Compound";
 import Language from "../../components/Language/Language";
 import OtherInfo from "../../components/OtherInfo/OtherInfo";
 import Photo from "../../components/Photo/Photo";
-
+import * as actions from "../../store/actions";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Form.module.sass";
 class Form extends React.Component {
@@ -638,6 +639,7 @@ class Form extends React.Component {
             validatePhoto={this.handleValidationPhoto}
             changePhoto={this.handlePhotoInputChange}
             resetValue={this.handleResetPhotoValue}
+            submitForm={(e) => this.props.onSubmitForm(this.state.userData)}
           />
         );
         break;
@@ -657,7 +659,7 @@ class Form extends React.Component {
             click={(e) => this.handleSwitchComponent(e, "back")}
             isDisabled={this.state.activePage <= 1}
           >
-            poprzedni
+            Back
           </Button>
           <Button
             isDisabled={this.state.activePage >= 7}
@@ -665,7 +667,7 @@ class Form extends React.Component {
             btnSize="big"
             click={(e) => this.handleSwitchComponent(e, "forward")}
           >
-            następny
+            Next
           </Button>
         </div>
       </div>
@@ -673,4 +675,10 @@ class Form extends React.Component {
   }
 }
 
-export default withRouter(Form);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSubmitForm: (state) => dispatch(actions.addFormData(state)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(Form));
