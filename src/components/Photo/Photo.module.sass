@@ -1,11 +1,19 @@
 @import "../../sass-variables/wrapper.module.sass"
+@import "../../sass-variables/photo.module.sass"
+
 
 .Photo
     @include sectionGeneralStyle
-
-
     .Image
-        width: 100%
-        max-width: 420px
-        display: block
-        margin: 10px auto
+        @include photoGeneralStyle
+        
+
+.Error
+    display: block
+    width: 80%
+    margin: 20px auto
+    border: 1px solid red
+    border-radius: 5px
+    color: red
+    font-weight: 700
+    padding: 30px

@@ -1,1 +1,2 @@
 export const ADD_FORM_DATA = 'ADD_FORM_DATA'
+export const INIT_FORM_DATA = 'INIT_FORM_DATA'

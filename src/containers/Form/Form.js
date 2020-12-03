@@ -6,210 +6,14 @@ import Basic from "../../components/Basic/Basic";
 import Compound from "../../components/Compound/Compound";
 import Language from "../../components/Language/Language";
 import OtherInfo from "../../components/OtherInfo/OtherInfo";
-import Photo from "../../components/Photo/Photo";
+import About from "../../components/About/About";
+import Confirm from "../../components/Confirm/Confirm"
 import * as actions from "../../store/actions";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Form.module.sass";
 class Form extends React.Component {
   state = {
-    userData: {
-      basic: {
-        name: {
-          id: "name",
-          value: "",
-          label: "Name",
-          type: "text",
-        },
-        surname: {
-          id: "surname",
-          value: "",
-          label: "Surname",
-          type: "text",
-        },
-        city: {
-          id: "city",
-          value: "",
-          label: "City",
-          type: "text",
-
-          isActive: true,
-        },
-        address: {
-          id: "address",
-          value: "",
-          label: "address",
-          type: "text",
-
-          isActive: true,
-        },
-
-        zipCode: {
-          id: "zipCode",
-          value: "",
-          label: "Zip Code",
-          type: "text",
-
-          isActive: true,
-        },
-        birthDate: {
-          id: "birthDate",
-          value: "",
-          label: "Birth date",
-          type: "date",
-
-          isActive: true,
-        },
-      },
-      contact: {
-        phone: {
-          id: "phone",
-          value: "",
-          label: "phone number",
-          type: "tel",
-        },
-        email: {
-          id: "email",
-          value: "",
-          label: "e-mail",
-          type: "text",
-        },
-
-        website: {
-          id: "website",
-          value: "",
-          label: "Website",
-          type: "text",
-          isActive: true,
-        },
-        facebook: {
-          id: "facebook",
-          value: "",
-          label: "Facebook",
-          type: "text",
-          isActive: true,
-        },
-        linkedin: {
-          id: "linkedin",
-          value: "",
-          type: "text",
-          label: "LinkedIn",
-          isActive: true,
-        },
-        github: {
-          id: "github",
-          value: "",
-          type: "text",
-          label: "Git Hub",
-          isActive: true,
-        },
-      },
-      work: [
-        {
-          place: {
-            id: "place",
-            value: "",
-            type: "text",
-            label: "name",
-          },
-          specialization: {
-            id: "specialization",
-            value: "",
-            type: "text",
-            label: "Your specialization",
-          },
-          skills: {
-            id: "skills",
-            value: [""],
-            type: "text",
-            label: "skills",
-          },
-          date: {
-            id: "date",
-            value: ["", ""],
-            type: "month",
-            label: "work date",
-          },
-        },
-      ],
-      school: [
-        {
-          place: {
-            id: "place",
-            value: "",
-            type: "text",
-            label: "name",
-          },
-          specialization: {
-            id: "specialization",
-            value: "",
-            type: "text",
-            label: "Your specialization",
-          },
-          skills: {
-            id: "skills",
-            value: [""],
-            type: "text",
-            label: "skills",
-          },
-          date: {
-            id: "date",
-            value: ["", ""],
-            type: "month",
-            label: "date",
-          },
-        },
-      ],
-      languages: [
-        {
-          language: {
-            id: "language",
-            value: "",
-            type: "text",
-            label: "language name",
-          },
-          level: {
-            id: "level",
-            value: "Elementary",
-            type: "text",
-            label: "Your level",
-          },
-          skills: {
-            id: "skills",
-            value: [],
-            type: "text",
-            label: "skills",
-          },
-        },
-      ],
-      otherInfo: [
-        {
-          id: "courses",
-          skills: {
-            value: [""],
-          },
-          label: "Courses",
-          type: "text",
-        },
-
-        {
-          id: "hobby",
-          skills: {
-            value: [""],
-          },
-          label: "Interests",
-          type: "text",
-        },
-      ],
-      photo: {
-        id: "photo",
-        value: "",
-        label: "image",
-        type: "text",
-        startValidate: false,
-        isValidated: false,
-        placeholder: "paste URL link to your photo",
-      },
-    },
+    userData: {},
     activePage: null,
     options: [
       "Elementary",
@@ -218,21 +22,42 @@ class Form extends React.Component {
       "Full Professional",
       "Native",
     ],
+    effects: {
+      loading: true,
+    },
   };
 
   componentDidMount() {
     this.setState({
+      userData: this.props.userData,
       activePage: +this.props.match.params.id,
     });
   }
   componentDidUpdate(__, prevState) {
     if (prevState.activePage !== this.state.activePage) {
+      this.setState({
+        effects: {
+          loading: false,
+        },
+      });
       this.props.history.push(`${this.state.activePage}`);
     }
   }
+  shouldComponentUpdate(__, prevState) {
+    if (prevState.activePage !== this.state.activePage) {
+      this.setState({
+        effects: {
+          loading: true,
+        },
+      });
+      return true;
+    }
+
+    return true;
+  }
+
   handleSwitchComponent(e, move) {
     e.preventDefault();
-
     if (move === "forward") {
       this.setState((prev) => ({
         activePage: ++prev.activePage,
@@ -297,6 +122,7 @@ class Form extends React.Component {
     });
   };
   handleTextareaChange = (e, dataType, mainIndex, index) => {
+    console.log(dataType, mainIndex, index);
     const newData = [...this.state.userData[dataType]];
     const skills = { ...this.state.userData[dataType][mainIndex].skills };
     skills.value[index] = e.target.value;
@@ -316,6 +142,7 @@ class Form extends React.Component {
   handleCheckboxChange = (dataType, id) => {
     let userData;
 
+    console.log(dataType, id);
     userData = {
       ...this.state.userData,
       [dataType]: {
@@ -430,7 +257,7 @@ class Form extends React.Component {
           },
         };
         break;
-      case "languages":
+      case "language":
         newGroup = {
           language: {
             id: "language",
@@ -492,67 +319,31 @@ class Form extends React.Component {
     });
   };
 
-  handlePhotoInputChange = (e = "", dataType) => {
-    console.log(dataType);
-
+  handlePhotoInputSubmit = (dataType, value, show) => {
     this.setState({
       userData: {
         ...this.state.userData,
         [dataType]: {
           ...this.state.userData[dataType],
-          value: e.target.value,
-          startValidate: false,
-          isValidated: false,
-        },
-      },
-    });
-  };
-  handleResetPhotoValue = (e, dataType) => {
-    console.log("clicked");
-    e.preventDefault(e);
-    this.setState({
-      userData: {
-        ...this.state.userData,
-        [dataType]: {
-          ...this.state.userData[dataType],
-          value: "",
-          startValidate: false,
-          isValidated: false,
-        },
-      },
-    });
-  };
-  handleValidationPhoto = (e, dataType, action) => {
-    e.preventDefault();
-
-    let actionType;
-
-    if (action === "start") {
-      actionType = "startValidate";
-    } else if (action === "confirm") {
-      actionType = "isValidated";
-    }
-
-    this.setState({
-      userData: {
-        ...this.state.userData,
-        [dataType]: {
-          ...this.state.userData[dataType],
-          [actionType]: true,
+          value: value,
+          isShowed: show
         },
       },
     });
   };
 
   render() {
+    console.log(this.state.effects.loading);
+
     const index = this.state.activePage;
-    let activeComponent;
+    let activeComponent = null;
     switch (index) {
       case 1:
         activeComponent = (
           <Basic
-            data={this.state.userData.basic}
-            dataType="basic"
+            header="Personal info"
+            data={this.state.userData.personalInfo}
+            dataType="personalInfo"
             inputChange={this.handleBasicInputChange}
             checkboxChange={this.handleCheckboxChange}
           />
@@ -561,6 +352,7 @@ class Form extends React.Component {
       case 2:
         activeComponent = (
           <Basic
+            header="Contact"
             data={this.state.userData.contact}
             dataType="contact"
             inputChange={this.handleBasicInputChange}
@@ -600,14 +392,13 @@ class Form extends React.Component {
           />
         );
         break;
-
       case 5:
         activeComponent = (
           <Language
             inputChange={this.handleCompoundInputChange}
             header="Languages"
-            dataType="languages"
-            data={this.state.userData.languages}
+            dataType="language"
+            data={this.state.userData.language}
             options={this.state.options}
             handleAddSection={this.handleAddSection}
             handleDeleteSection={this.handleDeleteSection}
@@ -618,7 +409,6 @@ class Form extends React.Component {
           />
         );
         break;
-
       case 6:
         activeComponent = (
           <OtherInfo
@@ -630,16 +420,19 @@ class Form extends React.Component {
           />
         );
         break;
-
       case 7:
         activeComponent = (
-          <Photo
-            dataType="photo"
-            data={this.state.userData.photo}
-            validatePhoto={this.handleValidationPhoto}
-            changePhoto={this.handlePhotoInputChange}
-            resetValue={this.handleResetPhotoValue}
-            submitForm={(e) => this.props.onSubmitForm(this.state.userData)}
+          <About
+            photo={{
+              data: this.state.userData.photo,
+              addPhoto: this.handlePhotoInputSubmit,
+            }}
+            aboutMe={{
+              data: this.state.userData.aboutMe,
+              inputChange: this.handleBasicInputChange,
+              checkboxChange: this.handleCheckboxChange,
+            }}
+         
           />
         );
         break;
@@ -648,10 +441,13 @@ class Form extends React.Component {
         break;
     }
 
+    const LoadingClass = this.state.effects.loading ? classes.Loading : null;
     return (
       <div className={classes.Container}>
-        <div className={classes.FormWrapper}>{activeComponent}</div>
-
+       
+        <form className={[classes.FormWrapper, LoadingClass].join(" ")}>
+          {activeComponent}
+        </form>
         <div className={classes.ControlButtons}>
           <Button
             btnType="danger"
@@ -661,6 +457,8 @@ class Form extends React.Component {
           >
             Back
           </Button>
+           {this.props.isSumbitted || this.state.activePage === 7 ?   <Confirm  handleConfirmForm={ this.props.onSubmitForm} data= {this.state.userData} />: null  }
+
           <Button
             isDisabled={this.state.activePage >= 7}
             btnType="success"
@@ -674,6 +472,12 @@ class Form extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    isSumbitted: state.isSumbitted,
+    userData: state.data,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -681,4 +485,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(Form));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Form));

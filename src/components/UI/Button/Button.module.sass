@@ -6,31 +6,50 @@
     font-weight: 400
     border-radius: 5px
     outline-style: none
-    transition: all .2s linear 
+    transition: background-color .3s linear 
+    background-color: white
+    
     &:hover
         cursor: pointer
         box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3)
+    &:disabled
+        cursor: not-allowed
+        &:hover
+            background-color: inherit
+            color: $disabled-color
+            box-shadow: none
 
 .success
-    outline: $primary-color
-    color: $primary-color
+    outline: $success-color
+    color: $success-color
+    border: 1px solid $success-color
+    &:hover
+        background-color: $success-color
+        color: white
 .danger
-    outline: $secondary-color
-    color: $secondary-color
+    outline: $danger-color
+    color: $danger-color
+    border: 1px solid $danger-color
+    &:hover
+        background-color: $danger-color
+        color: white
+
+.info
+    outline: $info-color
+    color: $info-color
+    border: 1px solid $info-color
+    &:hover
+        background-color: $info-color
+        color: white
+
 
 .small
     padding: 5px 10px
-    margin: auto
+    margin: inherit
 
 .big
     padding: 10px 20px
     margin: 10px
-
-.remove
-    background-color: $secondary-color
-    outline-color:  $primary-color
-    
-    border: none
 
 .center
     display: block

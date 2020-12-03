@@ -1,14 +1,32 @@
+@import "../../sass-variables/wrapper.module.sass"
+@import "../../sass-variables/colors.module.sass"
 .Container
-    margin-top: 50px
+    margin-top: 20px
     display: flex 
     flex-direction: column 
     justify-content: center
     align-content: center
     align-items: center
-    
+
     .FormWrapper
+        border: 10px solid $primary-color
+        transition: all 3s   
         border-radius: 4px
-        box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4)
         width: 80%
-        max-width: 640px
-        background-color: #CCDBDC
+        max-width: 640px 
+        box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4)
+        opacity: 1
+.Loading
+    animation: Loading 3.15s ease-out
+.ControlButtons
+    display: flex
+    justify-content: space-between
+@keyframes Loading
+    0% 
+        opacity: 0
+        transform: scale(0.89) translateY(2%)
+        
+    100%
+        opacity: 1
+        transform: scale(1) translateY(0)
+        

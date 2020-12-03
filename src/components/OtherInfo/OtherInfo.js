@@ -8,6 +8,7 @@ const OtherInfo = (props) => {
     return element.skills.value.map((item, i) => {
       return (
         <TextArea
+        value={item}
           key={element.id + "value" + i}
           change={(e) => props.textareaChange(e, props.dataType, mainIndex, i)}
           click={(e) =>
@@ -20,12 +21,12 @@ const OtherInfo = (props) => {
 
   const showItems = () => {
     return props.data.map((item, i) => {
-      console.log(item);
+      
       return (
-        <section key={item.id + 1} className={classes.OtherInfo}>
+        <section id={item.label} key={item.id + 1} className={classes.OtherInfo}>
           <h2>{item.label}</h2>
           {showValueItems(item, i)}
-          <Button click={(e) => props.handleAddSkill(e, props.dataType, i)}>
+          <Button btnType="info" btnSize="small" click={(e) => props.handleAddSkill(e, props.dataType, i)}>
             Add skill
           </Button>
         </section>

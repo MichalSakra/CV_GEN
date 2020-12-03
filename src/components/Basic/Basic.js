@@ -11,10 +11,11 @@ const Basic = (props) => {
   const inputs = arrayOfInputs.map((item, i) => {
     const { label, type, id, isActive, value } = props.data[item];
     const hasCheckbox = props.data[item].hasOwnProperty("isActive");
-    const inactive = hasCheckbox && !isActive? classes.inactive : null
+    const inactive = hasCheckbox && !isActive ? classes.inactive : null;
     return (
-      <div key={item + i} className={[classes.InputWrapper, inactive].join(" ")}>
+      <div key={item + i} className={[classes.Input, inactive].join(" ")}>
         <Input
+          isDisabled={hasCheckbox ? !isActive : false}
           label={label}
           type={type}
           id={id}
@@ -35,7 +36,12 @@ const Basic = (props) => {
     );
   });
 
-  return inputs;
+  return (
+    <section id={props.header} className={classes.Basic}>
+      <h1>{props.header}</h1>
+      {inputs}
+    </section>
+  );
 };
 
 export default Basic;

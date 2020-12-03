@@ -46,7 +46,6 @@ class Compound extends React.Component {
   };
 
   showSkillsInputs = (element, mainIndex, dataType, change) => {
-  
     const { label, id, value } = element.skills;
 
     return value.map((___, i) => {
@@ -69,11 +68,11 @@ class Compound extends React.Component {
 
     const elements = data.map((item, i) => {
       return (
-        <section className={classes.Section} key={item + i}>
+        <div className={classes.Compound} key={item + i}>
           <CompoundInput
             label={item.place.label}
             type={item.place.type}
-            id={item.place.id}
+            id={dataType + item.place.id}
             dataType={dataType}
             change={this.props.inputChange}
             value={item.place.value}
@@ -82,7 +81,7 @@ class Compound extends React.Component {
           <CompoundInput
             label={item.specialization.label}
             type={item.specialization.type}
-            id={item.specialization.id}
+            id={dataType + item.specialization.id}
             dataType={dataType}
             change={this.props.inputChange}
             value={item.specialization.value}
@@ -92,8 +91,8 @@ class Compound extends React.Component {
           <p> Skills:</p>
           <div>
             {this.showSkillsInputs(item, i, dataType, textareaChange)}
-            <Button click={(e) => this.props.handleAddSkill(e, dataType, i)}>
-              Add new skill
+            <Button btnType="info" btnSize="small" click={(e) => this.props.handleAddSkill(e, dataType, i)}>
+              Add skill
             </Button>
           </div>
 
@@ -107,7 +106,7 @@ class Compound extends React.Component {
               Remove this section
             </Button>
           ) : null}
-        </section>
+        </div>
       );
     });
 
@@ -129,9 +128,8 @@ class Compound extends React.Component {
   };
 
   render() {
-    return (
-      <div className={classes.Compound}>
-        {this.state.isModalActive ? (
+    return (<>
+     {this.state.isModalActive ? (
           <Modal
             acceptClick={(e) => {
               this.props.handleDeleteSection(
@@ -145,19 +143,23 @@ class Compound extends React.Component {
             }}
           />
         ) : null}
+      <section id={this.props.header} className={classes.Section}>
+       
         <h1>{this.props.header}</h1>
 
         {this.showElements(this.props)}
         <Button
           btnType="success"
           btnSize="big"
+          btnPosition="center"
           click={(e) => {
             this.props.handleAddSection(e, this.props.dataType);
           }}
         >
           {`add another ${this.props.dataType}`}
         </Button>
-      </div>
+      </section>
+      </>
     );
   }
 }

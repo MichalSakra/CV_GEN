@@ -10,6 +10,7 @@ const Input = (props) => {
         {label}
       </label>
       <input
+        disabled={props.isDisabled}
         placeholder={props.placeholder}
         index={index}
         value={value}

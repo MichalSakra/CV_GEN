@@ -1,14 +1,17 @@
 @import "../../../sass-variables/Input.module.sass"
+@import "../../../sass-variables/colors.module.sass"
 
 .InputWrapper
     position: relative
 
     button
         position: absolute
-        top: 20px
-        right: 20px
-        
-
+        top: 10px
+        right: 25px
+        border: 1px solid $danger-color
+        &:hover
+            background-color: $danger-color
+            color: white
 
 .TextArea
     @include inputGeneralStyle  

@@ -1,20 +1,25 @@
-import React from 'react';
-import { Redirect, withRouter } from 'react-router';
+import React from "react";
+import { withRouter } from "react-router";
 
-import Button from "../UI/Button/Button"
-const Confirm =(props)=>{
+import Button from "../UI/Button/Button";
 
- const handleConfirmClick = ()=>{
-    props.submitForm()
+const Confirm = (props) => {
+  const handleConfirmClick = () => {
+    props.handleConfirmForm(props.data);
 
-    return props.history.push("/verify")
- }
-    
-    return <div>
-        <p>That is all. Check all of your information again. If everything is OK click the button bellow</p>
+    return props.history.push("/verify");
+  };
 
-        <Button btnSize="big" btnType="success" btnPosition="center" click={handleConfirmClick}>OK</Button>
-    </div>
-}
+  return (
+    <Button
+      btnSize="big"
+      btnType="info"
+      btnPosition="center"
+      click={handleConfirmClick}
+    >
+      OK
+    </Button>
+  );
+};
 
-export default withRouter(Confirm)
+export default withRouter(Confirm);

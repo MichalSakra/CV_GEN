@@ -1,18 +1,15 @@
 import React from "react";
 import classes from "./TextArea.module.sass";
-import Button from "../Button/Button";
-const TextArea = (props) => {
 
+const TextArea = (props) => {
   return (
     <div className={classes.InputWrapper}>
-      <Button click={props.click} >
-        remove
-      </Button>
       <textarea
+        disabled={props.isDisabled}
         onChange={props.change}
         id={props.id}
-        cols="20"
-        rows="2"
+        cols="10"
+        rows="8"
         value={props.value}
         className={classes.TextArea}
       >

@@ -8,7 +8,7 @@ import {
 import Home from "./containers/Home/Home";
 import Form from "./containers/Form/Form";
 import "./index.module.sass";
-import Verify from "./components/Verify/Verify";
+import Verify from "./containers/Verify/Verify";
 
 class App extends React.Component {
   render() {

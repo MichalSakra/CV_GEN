@@ -36,6 +36,7 @@ class Language extends React.Component {
   };
 
   showSkillsInputs = (element, mainIndex, dataType, change) => {
+    
     const { label, id, value } = element.skills;
 
     return value.map((item, i) => {
@@ -47,7 +48,7 @@ class Language extends React.Component {
           mainIndex={mainIndex}
           index={i}
           value={value[i]}
-          change={change}
+          change={(e)=>this.props.textareaChange(e, dataType, mainIndex, i)}
           dataType={dataType}
           click={(e) => {
             this.props.handleDeleteSkill(e, dataType, mainIndex, i);
@@ -60,7 +61,7 @@ class Language extends React.Component {
   showLanguages = (data, dataType, options, change) => {
     return data.map((language, i) => {
       return (
-        <section key={dataType + i} className={classes.Section}>
+        <div key={dataType + i} className={classes.Language}>
           <CompoundInput
             dataType={dataType}
             index={i}
@@ -69,6 +70,7 @@ class Language extends React.Component {
             change={change}
           />
           <Select
+          id={i}
             select={(e) => {
               this.props.handleSelect(e, dataType, i);
             }}
@@ -82,8 +84,8 @@ class Language extends React.Component {
               dataType,
               this.props.textareaChange
             )}
-            <Button click={(e) => this.props.handleAddSkill(e, dataType, i)}>
-              Add new skill
+            <Button btnType="info" btnSize="small" click={(e) => this.props.handleAddSkill(e, dataType, i)}>
+              Add skill
             </Button>
           </div>
 
@@ -97,7 +99,7 @@ class Language extends React.Component {
               Remove this section
             </Button>
           ) : null}
-        </section>
+        </div>
       );
     });
   };
@@ -105,7 +107,7 @@ class Language extends React.Component {
   render() {
     const { header, dataType, data, options, inputChange } = this.props;
     return (
-      <div className={classes.Language}>
+      <section id={this.props.header} className={classes.Secion} >
         {this.state.isModalActive ? (
           <Modal
             acceptClick={(e) => {
@@ -126,12 +128,12 @@ class Language extends React.Component {
           btnType="success"
           btnSize="big"
           click={(e) => {
-            this.props.handleAddGroup(e, this.props.dataType);
+            this.props.handleAddSection(e, this.props.dataType);
           }}
         >
-          {`add another language`}
+          add another language
         </Button>
-      </div>
+      </section>
     );
   }
 }
